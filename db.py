@@ -53,3 +53,27 @@ def posts_all():
         """
     ).fetchall()
     return [dict(row) for row in rows]
+
+def posts_create(title, content):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        INSERT INTO posts (title, content)
+        VALUES (?, ?)
+        RETURNING *
+        """,
+        (title, content),
+    ).fetchone()
+    conn.commit()
+    return dict(row)
+
+def posts_find_by_id(id):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        SELECT * FROM posts
+        WHERE id = ?
+        """,
+        (id,),
+    ).fetchone()
+    return dict(row)

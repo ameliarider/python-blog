@@ -13,3 +13,17 @@ def hello():
 @app.route("/posts.json")
 def index():
     return db.posts_all()
+
+@app.route("/posts.json", methods=["POST"])
+def create():
+    if request.is_json:
+        data = request.json
+    else:
+        data = request.form
+    title = data.get("title")
+    content = data.get("content")
+    return db.posts_create(title, content)
+
+@app.route("/posts/<id>.json")
+def show(id):
+    return db.posts_find_by_id(id)
