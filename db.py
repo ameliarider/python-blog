@@ -77,3 +77,16 @@ def posts_find_by_id(id):
         (id,),
     ).fetchone()
     return dict(row)
+
+def posts_update_by_id(id, title, content):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        UPDATE posts SET title = ?, content = ?
+        WHERE id = ?
+        RETURNING *
+        """,
+        (title, content, id),
+    ).fetchone()
+    conn.commit()
+    return dict(row)

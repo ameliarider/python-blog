@@ -27,3 +27,14 @@ def create():
 @app.route("/posts/<id>.json")
 def show(id):
     return db.posts_find_by_id(id)
+
+@app.route("/posts/<id>.json", methods=["PATCH"])
+def update(id):
+    if request.is_json:
+        data = request.json
+    else:
+        data = request.form
+    post = db.posts_find_by_id(id)
+    title = data.get("title") or post["title"]
+    content = data.get("content") or post["content"]
+    return db.posts_update_by_id(id, title, content)
