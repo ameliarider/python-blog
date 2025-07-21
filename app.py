@@ -38,3 +38,7 @@ def update(id):
     title = data.get("title") or post["title"]
     content = data.get("content") or post["content"]
     return db.posts_update_by_id(id, title, content)
+
+@app.route("/posts/<id>.json", methods=["DELETE"])
+def destroy(id):
+    return db.posts_destroy_by_id(id)
